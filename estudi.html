@@ -1,37 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-  <title>Cronômetro de Estudo</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Controle de Estudo e Descanso</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f0f8ff;
+  }
+  h1 {
+    text-align: center;
+  }
+  .container {
+    max-width: 800px;
+    margin: auto;
+  }
+  .section {
+    margin-bottom: 30px;
+  }
+  button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  #clock {
+    font-size: 24px;
+    margin-top: 10px;
+  }
+  #calendar {
+    width: 100%;
+  }
+  #stats {
+    margin-top: 20px;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <img src="bope-logo.png" alt="BOPE Logo">
-    <h1>Cronômetro de Estudo</h1>
-  </header>
-  <main>
-    <div id="cronometro">
-      <p id="tempo">00:00:00</p>
-      <button id="iniciar">Iniciar</button>
-      <button id="pausar">Pausar</button>
-      <button id="resetar">Resetar</button>
-    </div>
-    <div id="estatisticas">
-      <p id="tempo-estudado">Tempo estudado: 00:00:00</p>
-      <p id="tempo-descanso">Tempo de descanso: 00:00:00</p>
-    </div>
-    <div id="calendario">
-      <p id="data-atual"></p>
-      <p id="tempo-estudado-hoje"></p>
-      <p id="tempo-estudado-mes"></p>
-      <p id="tempo-estudado-total"></p>
-      <p id="dias-para-prova"></p>
-    </div>
-    <div id="relogio">
-      <p id="hora-atual"></p>
-    </div>
-  </main>
+<div class="container">
+  <h1>Controle de Estudo e Descanso</h1>
+  
+  <!-- Cronômetro de Estudo -->
+  <div class="section">
+    <h2>Cronômetro de Estudo (30 min)</h2>
+    <div id="study-timer">30:00</div>
+    <button id="start-study">Iniciar Estudo</button>
+    <button id="reset-study">Resetar Estudo</button>
+  </div>
+  
+  <!-- Cronômetro de Descanso -->
+  <div class="section">
+    <h2>Cronômetro de Descanso (10 min)</h2>
+    <div id="rest-timer">10:00</div>
+    <button id="start-rest">Iniciar Descanso</button>
+    <button id="reset-rest">Resetar Descanso</button>
+  </div>
+  
+  <!-- Calendário -->
+  <div class="section">
+    <h2>Calendário</h2>
+    <input type="date" id="calendar" />
+  </div>
+  
+  <!-- Horário de Brasília -->
+  <div class="section">
+    <h2>Horário de Brasília</h2>
+    <div id="clock"></div>
+  </div>
+  
+  <!-- Índice de horas estudadas e descansadas -->
+  <div class="section" id="stats">
+    <h2>Estatísticas</h2>
+    <p>Horas estudadas: <span id="study-hours">0</span></p>
+    <p>Horas descansadas: <span id="rest-hours">0</span></p>
+  </div>
+</div>
 
-  <script src="script.js"></script>
-</body>
-</html>
+<script>
+  // Função para atualizar o relógio de Brasília
+  function updateClock() {
+    const options = { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString('pt-BR', options);
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Variáveis para cronômetros
+  let studyTime = 0; // em segundos
+  let restTime = 0; // em segundos
+  let studyInterval = null;
+  let restInterval = null;
+
+  // Contadores de concluídos
+  let studyCount = 0;
+  let restCount = 0;
+
+  // Funções para formatar tempo
