@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cronômetro de Estudo</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+  }
+  header {
+    margin-bottom: 20px;
+  }
+  /* Logo da caveira */
+  #logo {
+    width: 100px;
+    height: auto;
+  }
+  h1 {
+    margin-top: 10px;
+  }
+  #timer {
+    font-size: 48px;
+    margin: 20px 0;
+  }
+  button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  #stats {
+    margin-top: 30px;
+    font-size: 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Substitua o src pela URL da sua imagem de caveira do BOPE -->
+  <img id="logo" src="https://i.imgur.com/4AiXzf8.png" alt="Caveira do BOPE" />
+  <h1>Cronômetro de Estudo</h1>
+</header>
+
+<div id="timer">30:00</div>
+
+<div>
+  <button id="startBtn">Iniciar</button>
+  <button id="pauseBtn">Pausar</button>
+  <button id="resetBtn">Resetar</button>
+</div>
+
+<div id="stats">
+  Minutos estudados hoje: <span id="studyMinutes">0</span>
+</div>
+
+<script>
+  // Variáveis do cronômetro
+  let totalSeconds = 30 * 60; // 30 minutos em segundos
+  let timerInterval = null;
+  let isRunning = false;
+
+  // Variável para controle de minutos estudados
+  let totalStudyMinutes = 0;
+
+  // Elementos do DOM
+  const timerDisplay = document.getElementById('timer');
+  const startBtn = document.getElementById('startBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const studyMinutesSpan = document.getElementById('studyMinutes');
+
+  // Função para atualizar o display do timer
+  function updateDisplay() {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    timerDisplay.textContent = 
+      `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  // Função para iniciar o cronômetro
+function startTimer() {
+    if (isRunning) return;
+    isRunning = true;
+    timerInterval = setInterval(() => {
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        updateDisplay();
+      } else {
+        clearInterval(timerInterval);
+        isRunning = false;
+        alert('Tempo de estudo concluído!');
+        // Incrementar minutos estudados
+        totalStudyMinutes++;
+        studyMinutesSpan.textContent = totalStudy
